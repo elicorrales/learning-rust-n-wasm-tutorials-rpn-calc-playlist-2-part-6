@@ -1,0 +1,42 @@
+<html>
+    <body>
+        <title>This is a test</title>
+        Hello There This Page Runs Javascript that loads/runs WASM....
+
+        <input type="text" id="myinput"/>
+        <br/>
+        <button type="button" id="mysetbutton" onclick="setIt()">Set Value In WASM VM</button>
+        <br/>
+        <button type="button" id="mygetbutton" onclick="getIt()">Get Value From WASM VM</button>
+        <br/>
+        <label id="mylabel"></label>
+
+    </body>
+
+    <script>
+        let mywasm;
+
+
+        function setIt() {
+            let rtn = document.getElementById('myinput').value;
+            if (!isNaN(rtn)) {
+                mywasm.setIt(rtn);
+            } else {
+                mywasm.setIt(rtn.charCodeAt());
+            }
+        }
+
+        function getIt() {
+            let rtn = mywasm.getIt();
+            document.getElementById('mylabel').innerHTML = rtn;
+        }
+
+
+        debugger;
+        WebAssembly.instantiateStreaming(fetch('myfirst.wasm'))
+            .then(result => {
+                mywasm = result.instance.exports;
+            })
+    </script>
+
+</html>
